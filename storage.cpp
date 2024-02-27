@@ -159,6 +159,16 @@ void Storage::renamePlaylist(int playlistId, const std::string& newPlaylistName)
     }
 }
 
+void Storage::seeSong(int songId) {
+    if (generalSongLibrary.songExists(songId))cout<<"song "<< songId <<" "<<generalSongLibrary.getSong(songId).getTitle()<<" by "<<generalSongLibrary.getSong(songId).getArtist()<< endl;
+    for (auto it = musicLibrary.begin(); it != musicLibrary.end(); ++it) {
+        DynamicSongArray& value = it->second;
+        if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(songId).getTitle()<<" by "<<value.getSong(songId).getArtist()<< endl;
+    }
+}
+
+
+
 void Storage::printNotFound(std::string str) const {
     cout << "Your " << str << " was not found!\nThus your operation failed." << endl;
 }

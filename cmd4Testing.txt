@@ -1,0 +1,28 @@
+song 1 "Taylor Swift" 214 Willow
+playlist 2 "MellowSongs"
+add 1 2
+drop 1 2
+seeplaylist 2
+playlist 4 "FoFoFo"
+deleteplaylist 1
+copyplaylist 4 8 "8Fo8"
+seeplaylist 8
+deleteplaylist 4
+seeplaylist 4
+song 10 "222 ft" 214 Wow
+add 10 8
+copyplaylist 8 5 "My friend's favorite songs"
+seeplaylist 8
+renameplaylist 8 DopeSongs
+song 45 "Gill" 111 ItGoes
+seesong 45
+song 43 "43" 111 Test
+add 43 8
+seesong 43
+
+playlist 4 "FoFoFo"
+song 45 "Gill" 111 ItGoes
+seesong 45
+song 43 "43" 111 Test
+add 43 8
+seesong 43

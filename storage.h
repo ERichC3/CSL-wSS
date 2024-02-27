@@ -29,6 +29,7 @@ public:
     void copyPlaylist(int playlistId, int newPlaylistId, const std::string& newPlaylistName);
     void renamePlaylist(int playlistId, const std::string& newPlaylistName);
     void removePlaylist(int playlistId);
+    void seeSong(int songId);
     // Additional functions as needed
 };
 

@@ -144,8 +144,9 @@ void Input() {
             }
             break;
         case CMD_SEESONG:
-        
-            cout << "song " << stringList[1] << endl;
+            if(!argTesting(2,stringList))break;
+            else if(parseID(stringList[1])==-1234)break;
+            else store.seeSong(parseID(stringList[1]));
             break;
         case CMD_SEEPLAYLIST:
             if(!argTesting(2,stringList))break;

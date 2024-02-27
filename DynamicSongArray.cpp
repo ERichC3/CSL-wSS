@@ -66,7 +66,7 @@ int DynamicSongArray::getSize() const {
 
 Song DynamicSongArray::getSong(int index) const {
     if (index < 0 || index > numSongs) {
-        throw std::out_of_range("Index out of range");
+        throw std::out_of_range("Index out of range. This error is inside getSong() from DynamicSongArray.");
     }
     return songs[index];
 }

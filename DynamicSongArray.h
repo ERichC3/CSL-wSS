@@ -25,6 +25,7 @@ public:
     std::string getName() const;
     int getSize() const;
     Song getSong(int index) const;
+    Song* findSongById(int songId);
 };
 
 #endif // DYNAMICSONGARRAY_H

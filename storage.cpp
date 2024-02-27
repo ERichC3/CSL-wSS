@@ -18,7 +18,7 @@ bool Storage::addSong(const Song& song) {
         cout << "Song with ID " << song.getSongID() << " already exists! It cannot be added." << endl;
         return false;
     }
-    
+    cout << "Adding song "<< endl;
     generalSongLibrary.addSong(song); // Add the song to the general library
     return true;
 }
@@ -61,20 +61,16 @@ bool Storage::songExists(int songID) const {
 
 void Storage::addPlaylist(int playlistID, const std::string& playlistName) {
     // Check if the playlist ID already exists to avoid overwriting
-    if (musicLibrary.find(playlistID) != musicLibrary.end()) {
+    if (musicLibrary.count(playlistID) > 0){
         cout << "Playlist ID " << playlistID << " already exists!" << endl;
         return; // ID found, no need to continue
     }
-    
     // Create a new, empty DynamicSongArray for this playlist
     DynamicSongArray newPlaylist;
-
     // Set the playlist name
     newPlaylist.setPlaylistName(playlistName);
-
     // Add the new playlist to the musicLibrary using the playlist ID as the key
     musicLibrary[playlistID] = newPlaylist;
-
     printSuccessfulOp("Playlist addition");
 }
 
@@ -84,15 +80,15 @@ bool Storage::addSongToPlaylist(int songID, int playlistID) {
         printNotFound("SongID");
         return false;
     }
-
+     //cout<<"here2"<<endl;
     // Check if the playlist exists
     if (musicLibrary.find(playlistID) == musicLibrary.end()) {
         printNotFound("PlaylistID");
         return false;
     }
-
+    //cout<<"here3"<<endl;
     // Add song to the correct playlist
-    musicLibrary[playlistID].addSong(generalSongLibrary.getSong(songID));
+    musicLibrary[playlistID].addSong(*generalSongLibrary.findSongById(songID));
     printSuccessfulOp("Song addition to playlist");
     return true;
 }
@@ -117,6 +113,49 @@ void Storage::displaySongsInPlaylist(int playlistID) const {
         const Song& song = playlist->second.getSong(i);
         cout << "ID: " << song.getSongID() << ", Title: " << song.getTitle()
              << ", Artist: " << song.getArtist() << ", Duration: " << song.getDuration() << endl;
+    }
+}
+
+void Storage::copyPlaylist(int playlistId, int newPlaylistId, const std::string& newPlaylistName) {
+    if (musicLibrary.count(playlistId)) {
+        DynamicSongArray copiedPlaylist(musicLibrary[playlistId]); // Using copy constructor
+        musicLibrary[newPlaylistId] = copiedPlaylist;
+        std::cout << "Playlist copied successfully to new playlist with ID " << newPlaylistId << std::endl;
+    } else {
+        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
+    }
+};
+
+void Storage::removeSongFromPlaylist(int songId, int playlistId) {//This is drop-2/26 Kian
+    // Check if the playlist exist
+    cout<<musicLibrary.count(playlistId)<<endl;
+    if (musicLibrary.count(playlistId)) {
+        // If playlist exists, remove the song from it
+        if(musicLibrary[playlistId].songExists(songId)){
+            musicLibrary[playlistId].removeSong(songId);
+            printSuccessfulOp("Song removal from playlist");
+        }else printNotFound("PlaylistID");
+    } else {
+        // If playlist doesn't exist, print an error message
+        printNotFound("PlaylistID");
+    }
+}
+
+void Storage::removePlaylist(int playlistId) {
+    if (musicLibrary.count(playlistId)) {
+        musicLibrary.erase(playlistId);
+        std::cout << "Playlist with ID " << playlistId << " removed successfully." << std::endl;
+    } else {
+        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
+    }
+}
+
+void Storage::renamePlaylist(int playlistId, const std::string& newPlaylistName) {
+    if (musicLibrary.count(playlistId)) {
+        musicLibrary[playlistId].setPlaylistName(newPlaylistName);
+        std::cout << "Playlist with ID " << playlistId << " renamed to '" << newPlaylistName << "'." << std::endl;
+    } else {
+        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
     }
 }
 

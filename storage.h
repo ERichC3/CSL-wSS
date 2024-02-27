@@ -13,8 +13,6 @@ class Storage {
 private:
     DynamicSongArray generalSongLibrary; //This is where songs go that have no playlist -2/24 Kian
     std::unordered_map<int, DynamicSongArray> musicLibrary; 
-    //This is a hashmap with the playlist name as key. Then the value is other hashmap which maps song id key to the song object
-    //So we should have 1*1 time complexity -2/25/24 Kian F 
     void printNotFound(std::string str) const;
     void printSuccessfulOp(std::string str) const;
 public:
@@ -27,6 +25,10 @@ public:
     void addPlaylist(int playlistID, const std::string& playlistName); // Adds a new playlist
     bool addSongToPlaylist(int songID, int playlistID);
     void displaySongsInPlaylist(int playlistID) const;
+    void removeSongFromPlaylist(int songId,int playlistID);
+    void copyPlaylist(int playlistId, int newPlaylistId, const std::string& newPlaylistName);
+    void renamePlaylist(int playlistId, const std::string& newPlaylistName);
+    void removePlaylist(int playlistId);
     // Additional functions as needed
 };
 

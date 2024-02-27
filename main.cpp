@@ -75,6 +75,7 @@ int parseID(string strId){
     int id=-1234;
     try {
         int id = stoi(strId);
+        return id;
     } catch (const invalid_argument& e) {
        cout << "Invalid input: " << e.what() << endl;
        cout << "Invalid Input: Song Id cannot be " << strId<< endl;
@@ -119,20 +120,31 @@ void Input() {
             else if(parseID(stringList[1])==-1234)break;
             else store.removeSong(parseID(stringList[1]));
             break;
-        case CMD_PLAYLIST:
+        case CMD_PLAYLIST://Working on this-Kian 2/24
             if(!argTesting(3,stringList))break;
             else if(parseID(stringList[1])==-1234)break;
             else store.addPlaylist(parseID(stringList[1]),stringList[2]);
             break;
         case CMD_ADD:
-            if(!argTesting(3,stringList))break;
-            else if(parseID(stringList[1])==-1234||parseID(stringList[2])==-1234)break;
-            else store.addPlaylist(parseID(stringList[1]),stringList[2]);
+            if(argTesting(3,stringList)){
+                int id1=parseID(stringList[1]);
+                int id2=parseID(stringList[2]);
+                if(id1==-1234||id2==-1234)break;
+                else store.addSongToPlaylist(id1,id2);
+                break;
+            }
             break;
         case CMD_DROP:
-            cout << "remove song " << stringList[1] << " from playlist " << stringList[2] << endl;
+            if(argTesting(3,stringList)){
+                int id1=parseID(stringList[1]);
+                int id2=parseID(stringList[2]);
+                if(id1==-1234||id2==-1234)break;  
+                else store.removeSongFromPlaylist(id1,id2);
+                break;
+            }
             break;
         case CMD_SEESONG:
+        
             cout << "song " << stringList[1] << endl;
             break;
         case CMD_SEEPLAYLIST:
@@ -141,14 +153,26 @@ void Input() {
             else store.displaySongsInPlaylist(parseID(stringList[1]));
             break;
         case CMD_DELETEPLAYLIST:
-            //cout << "Deleting playlist " << stringList[1] << endl;
+            if(!argTesting(2,stringList))break;
+            else if(parseID(stringList[1])==-1234)break;
+            else store.removePlaylist(parseID(stringList[1]));
             break;
         case CMD_COPYPLAYLIST:
+            if(argTesting(4,stringList)){
+                int id1=parseID(stringList[1]);
+                int id2=parseID(stringList[2]);
+                if(id1==-1234||id2==-1234)break;  
+                else store.copyPlaylist(id1,id2,stringList[3]);
+                break;
+            }
            // cout << "Copying playlist " << stringList[1] << " to " << stringList[2] << endl;
             break;
         case CMD_RENAMEPLAYLIST:
-           // cout << "Renaming playlist " << stringList[1] << " to " << stringList[2] << endl;
+            if(!argTesting(3,stringList))break;
+            else if(parseID(stringList[1])==-1234)break;
+            else store.renamePlaylist(parseID(stringList[1]),stringList[2]);
             break;
+           // cout << "Renaming playlist " << stringList[1] << " to " << stringList[2] << endl;
         case CMD_QUIT:
             exit(0);
             break;

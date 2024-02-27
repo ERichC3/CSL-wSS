@@ -2,6 +2,7 @@
 #include <algorithm> // For std::copy
 #include <stdexcept> // For std::out_of_range
 #include <string>
+#include <iostream>
 
 using namespace std;
 
@@ -43,6 +44,7 @@ void DynamicSongArray::resize() {
 
 void DynamicSongArray::addSong(const Song& song) {
     if(numSongs==capacity)resize();
+    cout<<"Sucessful Add"<<endl;
     songs[numSongs++]=song;
 }
 
@@ -57,25 +59,38 @@ void DynamicSongArray::removeSong(int songID) {
         }
     }
 }
+
 int DynamicSongArray::getSize() const {
     return numSongs;
 }
 
 Song DynamicSongArray::getSong(int index) const {
-    if (index < 0 || index >= numSongs) {
+    if (index < 0 || index > numSongs) {
         throw std::out_of_range("Index out of range");
     }
     return songs[index];
 }
 
 bool DynamicSongArray::songExists(int songID) const {
+    //cout<<"here"<<endl;
     for (int i = 0; i < numSongs; ++i) {
         if (songs[i].getSongID() == songID) {
             return true;
         }
     }
     return false;
-}
+};
+
+
+Song* DynamicSongArray::findSongById(int songId) {
+    Song* songsarr=songs;
+    for (size_t i = 0; i < numSongs; ++i) {
+        if (songsarr[i].getSongID() == songId) {
+            return &songsarr[i];
+        }
+    }
+    return nullptr; // Song not found
+};
 
 // Setter method for playlist name
 void DynamicSongArray::setPlaylistName(std::string str) {

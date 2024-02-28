@@ -44,8 +44,10 @@ void DynamicSongArray::resize() {
 
 void DynamicSongArray::addSong(const Song& song) {
     if(numSongs==capacity)resize();
-    cout<<"Sucessful Add"<<endl;
+    //numSongs++; 
     songs[numSongs++]=song;
+    //numSongs++;
+    cout<<"Sucessful Add"<<endl;
 }
 
 void DynamicSongArray::removeSong(int songID) {
@@ -65,10 +67,22 @@ int DynamicSongArray::getSize() const {
 }
 
 Song DynamicSongArray::getSong(int index) const {
-    if (index < 0 || index > numSongs) {
+    if (index < 0 ) { //|| index > numSongs
         throw std::out_of_range("Index out of range. This error is inside getSong() from DynamicSongArray.");
     }
     return songs[index];
+}
+
+int DynamicSongArray::getIndex(int songID) const {
+    for (int i = 0; i < numSongs; ++i) {
+        if (songs[i].getSongID() == songID) {
+            //cout << "oh we got an index" << endl;
+            return i;
+        }
+    }
+    //cout << "getindex failed somehow lmao" << endl;
+    return -1;
+
 }
 
 bool DynamicSongArray::songExists(int songID) const {

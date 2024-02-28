@@ -24,6 +24,7 @@ public:
     void setPlaylistName(std::string str);
     std::string getName() const;
     int getSize() const;
+    int getIndex(int songID) const;
     Song getSong(int index) const;
     Song* findSongById(int songId);
 };

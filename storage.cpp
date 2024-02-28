@@ -159,12 +159,22 @@ void Storage::renamePlaylist(int playlistId, const std::string& newPlaylistName)
     }
 }
 
-void Storage::seeSong(int songId) {
-    if (generalSongLibrary.songExists(songId))cout<<"song "<< songId <<" "<<generalSongLibrary.getSong(songId).getTitle()<<" by "<<generalSongLibrary.getSong(songId).getArtist()<< endl;
+void Storage::seeSong(int songId) { 
+    /*idea:
+    get song index by using songID
+    use gotten index to getSong with index instead of songID
+    get proper title with the correct song gotten from array*/
+    //cout << "we entered see song though" << endl;
+    int thisIndex = generalSongLibrary.getIndex(songId);
+    if (generalSongLibrary.songExists(songId))cout<<"song "<< songId <<" "<<generalSongLibrary.getSong(thisIndex).getTitle()<<" by "<<generalSongLibrary.getSong(thisIndex).getArtist()<< endl;
+    else {cout << "song " << songId << " does not exist" << endl;}
+    /* testing? why is this here - Evan 2/28
     for (auto it = musicLibrary.begin(); it != musicLibrary.end(); ++it) {
         DynamicSongArray& value = it->second;
-        if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(songId).getTitle()<<" by "<<value.getSong(songId).getArtist()<< endl;
+        if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(thisIndex).getTitle()<<" by "<<value.getSong(thisIndex).getArtist()<< endl;
     }
+    */
+    //cout << "we exited though..." << endl;
 }
 
 

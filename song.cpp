@@ -13,18 +13,24 @@ Song::Song() : songid(0), artist("Unknown"), duration("0:00"), title("Untitled")
 // Parameterized constructor with output statement
 Song::Song(int id, string artistName, int songDurationSeconds, string songTitle)
 : songid(id), artist(artistName), title(songTitle) {
-    // Convert seconds to minutes:seconds format and assign to duration
-    int minutes = songDurationSeconds / 60;
-    int seconds = songDurationSeconds % 60;
-    
-    stringstream ss;
-    ss << minutes << ":"; 
-    if(seconds < 10) ss << "0"; // Leading zero for seconds less than 10
-    ss << seconds; 
-    
-    duration = ss.str(); 
-    
-    cout << "new song " << songid << " " << title << " by " << artist << " " << duration << endl;
+    /if(id > 0) {
+        // Convert seconds to minutes:seconds format and assign to duration
+        int minutes = songDurationSeconds / 60;
+        int seconds = songDurationSeconds % 60;
+        
+        stringstream ss;
+        ss << minutes << ":"; 
+        if(seconds < 10) ss << "0"; // Leading zero for seconds less than 10
+        ss << seconds; 
+        
+        duration = ss.str(); 
+        
+        cout << "new song " << songid << " " << title << " by " << artist << " " << duration << endl;
+        
+    }
+    else {
+        cout << "ID is less than 1, please use valid ID (SONG NOT MADE)" << endl;
+    }
 }
 
 Song::Song(const Song& source)

@@ -167,13 +167,16 @@ void Storage::seeSong(int songId) {
     //cout << "we entered see song though" << endl;
     int thisIndex = generalSongLibrary.getIndex(songId);
     if (generalSongLibrary.songExists(songId))cout<<"song "<< songId <<" "<<generalSongLibrary.getSong(thisIndex).getTitle()<<" by "<<generalSongLibrary.getSong(thisIndex).getArtist()<< endl;
-    else {cout << "song " << songId << " does not exist" << endl;}
-    /* testing? why is this here - Evan 2/28
-    for (auto it = musicLibrary.begin(); it != musicLibrary.end(); ++it) {
-        DynamicSongArray& value = it->second;
-        if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(thisIndex).getTitle()<<" by "<<value.getSong(thisIndex).getArtist()<< endl;
+    /* testing? why is this here - Evan 2/28 
+    else if{
+        for (auto it = musicLibrary.begin(); it != musicLibrary.end(); ++it) {
+            DynamicSongArray& value = it->second;
+            if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(thisIndex).getTitle()<<" by "<<value.getSong(thisIndex).getArtist()<< endl;
+        }
     }
     */
+    else {cout << "song " << songId << " does not exist" << endl;}
+    
     //cout << "we exited though..." << endl;
 }
 

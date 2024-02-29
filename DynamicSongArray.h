@@ -4,6 +4,8 @@
 #include "song.h"
 #include <string>
 
+
+
 class DynamicSongArray {
 private:
     std::string playListName;
@@ -18,13 +20,18 @@ public:
     DynamicSongArray(const DynamicSongArray& other); // Deep copy constructor
     ~DynamicSongArray();
     DynamicSongArray& operator=(const DynamicSongArray& other); 
+
     bool songExists(int songID) const;
+    
     void addSong(const Song& song);
     void removeSong(int songID);
     void setPlaylistName(std::string str);
+
     std::string getName() const;
+
     int getSize() const;
     int getIndex(int songID) const;
+
     Song getSong(int index) const;
     Song* findSongById(int songId);
 };

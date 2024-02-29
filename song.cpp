@@ -13,7 +13,8 @@ Song::Song() : songid(0), artist("Unknown"), duration("0:00"), title("Untitled")
 // Parameterized constructor with output statement
 Song::Song(int id, string artistName, int songDurationSeconds, string songTitle)
 : songid(id), artist(artistName), title(songTitle) {
-    /if(id > 0) {
+
+    if(id > 0) {
         // Convert seconds to minutes:seconds format and assign to duration
         int minutes = songDurationSeconds / 60;
         int seconds = songDurationSeconds % 60;
@@ -31,6 +32,7 @@ Song::Song(int id, string artistName, int songDurationSeconds, string songTitle)
     else {
         cout << "ID is less than 1, please use valid ID (SONG NOT MADE)" << endl;
     }
+    
 }
 
 Song::Song(const Song& source)
@@ -40,12 +42,13 @@ Song::Song(const Song& source)
 }
 
 Song& Song::operator=(const Song& source) {
-    if (this != &source) { // Check for self-assignment -2/26 Kian
+    if (this != &source) { 
         songid = source.songid;
         artist = source.artist;
         duration = source.duration;
         title = source.title;
     }
+
     return *this;
 }
 

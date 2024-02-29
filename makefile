@@ -1,11 +1,11 @@
-# Target to build everything
+# FINAL FILE NAME
 all: main
 
-# Executable depends on all object files
+# WE EXICUTE
 main: main.o song.o storage.o DynamicSongArray.o
 	g++ main.o song.o storage.o DynamicSongArray.o -o main
 
-# Each .cpp file is compiled separately into an .o file
+# MAKE DA Os
 main.o: main.cpp
 	g++ -c main.cpp
 
@@ -18,6 +18,6 @@ storage.o: storage.cpp storage.h
 DynamicSongArray.o: DynamicSongArray.cpp DynamicSongArray.h
 	g++ -c DynamicSongArray.cpp
 
-# Clean up intermediate files and the executable
+# SPRING CLEANING
 clean:
 	rm -f *.o main

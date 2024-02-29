@@ -13,13 +13,17 @@ Storage::Storage() {
 }
 
 bool Storage::addSong(const Song& song) {
-    // Add to generalSongLibrary
+    // Adds to generalSongLibrary
     if (generalSongLibrary.songExists(song.getSongID())) {
-        cout << "Song with ID " << song.getSongID() << " already exists! It cannot be added." << endl;
+        //cout << "Song with ID " << song.getSongID() << " already exists! It cannot be added." << endl;
+        int thisIndex = generalSongLibrary.getIndex(song.getSongID());
+        cout << "song id " << song.getSongID() << " is already used for " << generalSongLibrary.getSong(thisIndex).getTitle() << " by "
+        << generalSongLibrary.getSong(thisIndex).getArtist() << endl;
+        //song id ID is already used for TITLE by ARTIST
         return false;
     }
-    cout << "Adding song "<< endl;
-    generalSongLibrary.addSong(song); // Add the song to the general library
+    //debug line: cout << "Adding song "<< endl;
+    generalSongLibrary.addSong(song); // Adds the song to the general library
     return true;
 }
 
@@ -38,7 +42,10 @@ bool Storage::removeSong(int songID) {
         }
     }
 
-    if (!found)cout << "Song with ID " << songID << " not found." << endl;
+    if (!found) {
+        cout << "song  " << songID << " not found." << endl;
+    }
+
     return found;
 }
 
@@ -71,25 +78,34 @@ void Storage::addPlaylist(int playlistID, const std::string& playlistName) {
     newPlaylist.setPlaylistName(playlistName);
     // Add the new playlist to the musicLibrary using the playlist ID as the key
     musicLibrary[playlistID] = newPlaylist;
-    printSuccessfulOp("Playlist addition");
+    //debug line: printSuccessfulOp("Playlist addition");
+    cout << "new playlist " << playlistID << " called " << playlistName << endl;
 }
 
 bool Storage::addSongToPlaylist(int songID, int playlistID) {
+    cout << "add song " << songID << " to playlist " << playlistID << endl;
     // Check if the song exists in the general library
     if (!generalSongLibrary.songExists(songID)) {
-        printNotFound("SongID");
+        cout << "song " << songID << " does not exist" << endl;
+        //debug line: printNotFound("SongID");
         return false;
     }
      //cout<<"here2"<<endl;
     // Check if the playlist exists
     if (musicLibrary.find(playlistID) == musicLibrary.end()) {
-        printNotFound("PlaylistID");
+        cout << "playlist " << playlistID << " does not exist" << endl;
+        //debug line: printNotFound("PlaylistID");
+        return false;
+    }
+    if(musicLibrary[playlistID].songExists(songID)) {
+        cout << "song " << songID << " is already in playlist " << playlistID << endl;
         return false;
     }
     //cout<<"here3"<<endl;
     // Add song to the correct playlist
     musicLibrary[playlistID].addSong(*generalSongLibrary.findSongById(songID));
-    printSuccessfulOp("Song addition to playlist");
+    cout << "song " << songID << " successfully added to playlist " << playlistID << endl;
+    //debug line: printSuccessfulOp("Song addition to playlist");
     return true;
 }
 
@@ -97,7 +113,8 @@ void Storage::displaySongsInPlaylist(int playlistID) const {
     // Check if the playlist exists
     auto playlist = musicLibrary.find(playlistID);
     if (playlist == musicLibrary.end()) {
-        printNotFound("PlaylistID");
+        cout << "playlist " << playlistID << " does not exist" << endl;
+        //debug line: printNotFound("PlaylistID");
         return;
     }
 
@@ -108,11 +125,12 @@ void Storage::displaySongsInPlaylist(int playlistID) const {
     }
 
     // Display all songs in the playlist
-    cout << "Songs in playlist with ID " << playlistID << ":" << endl;
+    cout << "Songs in playlist " << playlistID << " "  << endl; //<< musicLibrary[playlistID].getName()
     for (int i = 0; i < playlist->second.getSize(); ++i) {
         const Song& song = playlist->second.getSong(i);
-        cout << "ID: " << song.getSongID() << ", Title: " << song.getTitle()
-             << ", Artist: " << song.getArtist() << ", Duration: " << song.getDuration() << endl;
+        
+        cout << "song " << song.getSongID() << " " << song.getTitle() << " by " << song.getArtist() << endl;
+        
     }
 }
 
@@ -120,22 +138,40 @@ void Storage::copyPlaylist(int playlistId, int newPlaylistId, const std::string&
     if (musicLibrary.count(playlistId)) {
         DynamicSongArray copiedPlaylist(musicLibrary[playlistId]); // Using copy constructor
         musicLibrary[newPlaylistId] = copiedPlaylist;
-        std::cout << "Playlist copied successfully to new playlist with ID " << newPlaylistId << std::endl;
-    } else {
-        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
+        cout << "playlist " << playlistId << " successfully copied to playlist " << newPlaylistId << " " << newPlaylistName << endl;
+        //debug line: std::cout << "Playlist copied successfully to new playlist with ID " << newPlaylistId << std::endl;
+    } 
+    
+    else {
+        std::cout << "Playlist " << playlistId << " not found." << std::endl;
     }
 };
 
-void Storage::removeSongFromPlaylist(int songId, int playlistId) {//This is drop-2/26 Kian
+void Storage::removeSongFromPlaylist(int songId, int playlistId) {
     // Check if the playlist exist
-    cout<<musicLibrary.count(playlistId)<<endl;
+    cout << "remove song " << songId << " from playlist " << playlistId << endl;
+    //debug text: cout<<musicLibrary.count(playlistId)<<endl;
     if (musicLibrary.count(playlistId)) {
         // If playlist exists, remove the song from it
         if(musicLibrary[playlistId].songExists(songId)){
-            musicLibrary[playlistId].removeSong(songId);
-            printSuccessfulOp("Song removal from playlist");
-        }else printNotFound("PlaylistID");
-    } else {
+            //check if song exists
+            if(generalSongLibrary.songExists(songId)) {
+                musicLibrary[playlistId].removeSong(songId);
+            cout << "song " << songId << " successully dropped from playlist " << playlistId << endl;
+            //debug line: printSuccessfulOp("Song removal from playlist");
+            }
+            else {
+                cout << "song " << songId << " does not exist" << endl;
+            }
+            
+        } else {
+            cout << "song " << songId << " is not in playlist " << playlistId << endl;
+            //debug line: printNotFound("PlaylistID");
+        }
+        
+    } 
+    
+    else {
         // If playlist doesn't exist, print an error message
         printNotFound("PlaylistID");
     }
@@ -144,37 +180,37 @@ void Storage::removeSongFromPlaylist(int songId, int playlistId) {//This is drop
 void Storage::removePlaylist(int playlistId) {
     if (musicLibrary.count(playlistId)) {
         musicLibrary.erase(playlistId);
-        std::cout << "Playlist with ID " << playlistId << " removed successfully." << std::endl;
-    } else {
-        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
+        std::cout << "Playlist " << playlistId << " successfully deleted" << std::endl;
+    } 
+    
+    else {
+        std::cout << "Playlist " << playlistId << " not found." << std::endl;
     }
 }
 
 void Storage::renamePlaylist(int playlistId, const std::string& newPlaylistName) {
     if (musicLibrary.count(playlistId)) {
         musicLibrary[playlistId].setPlaylistName(newPlaylistName);
-        std::cout << "Playlist with ID " << playlistId << " renamed to '" << newPlaylistName << "'." << std::endl;
-    } else {
-        std::cout << "Playlist with ID " << playlistId << " not found." << std::endl;
+        std::cout << "Playlist " << playlistId << " name successfully changed to " << newPlaylistName << std::endl;
+    } 
+    
+    else {
+        std::cout << "Playlist " << playlistId << " not found." << std::endl;
     }
 }
 
 void Storage::seeSong(int songId) { 
+    cout << "song " << songId << endl;
     /*idea:
     get song index by using songID
     use gotten index to getSong with index instead of songID
     get proper title with the correct song gotten from array*/
     //cout << "we entered see song though" << endl;
     int thisIndex = generalSongLibrary.getIndex(songId);
-    if (generalSongLibrary.songExists(songId))cout<<"song "<< songId <<" "<<generalSongLibrary.getSong(thisIndex).getTitle()<<" by "<<generalSongLibrary.getSong(thisIndex).getArtist()<< endl;
-    /* testing? why is this here - Evan 2/28 
-    else if{
-        for (auto it = musicLibrary.begin(); it != musicLibrary.end(); ++it) {
-            DynamicSongArray& value = it->second;
-            if(value.songExists(songId))cout<<"song "<< songId <<" "<<value.getSong(thisIndex).getTitle()<<" by "<<value.getSong(thisIndex).getArtist()<< endl;
-        }
-    }
-    */
+    if (generalSongLibrary.songExists(songId)) {
+        cout << "song " << songId << " " << generalSongLibrary.getSong(thisIndex).getTitle() << " by " 
+        << generalSongLibrary.getSong(thisIndex).getArtist() << endl;
+    } 
     else {cout << "song " << songId << " does not exist" << endl;}
     
     //cout << "we exited though..." << endl;
@@ -190,25 +226,3 @@ void Storage::printSuccessfulOp(std::string str) const {
     cout<<"Your "<<str<<" operation was a success!"<<endl;
 }
 
-/*vector<string> parseInput(const string& input) {
-    vector<string> tokens;
-    stringstream ss(input);
-    string token;
-    while (ss >> token) {
-        if (token.front() == '"') { // Start of quoted text
-            string quotedToken = token;
-            if (token.back() != '"') { // Handle case where quoted text is more than one word
-                while (ss >> token) {
-                    quotedToken += " " + token;
-                    if (token.back() == '"') break;
-                }
-            }
-            // Remove the quotes
-            quotedToken = quotedToken.substr(1, quotedToken.size() - 2);
-            tokens.push_back(quotedToken);
-        } else {
-            tokens.push_back(token);
-        }
-    }
-    return tokens;
-}*/

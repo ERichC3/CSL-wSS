@@ -68,7 +68,7 @@ map<string, Command> commandMap = {
 };
 
 void printInvalidSize(int size){
-    cout << "Invalid input:" << size << " is Insufficent amount of arguments for this command!" << endl;
+    cout << "Invalid input: " << size << " is incorrect amount of arguments for this command!" << endl;
 };
 
 bool argTesting(int size, vector<string> vec){
@@ -76,7 +76,8 @@ bool argTesting(int size, vector<string> vec){
         printInvalidSize(vec.size());
     }
 
-    return vec.size()==size;  
+    //return vec.size()==size;  USE THIS IF INVALID #ARGS == CANCEL CALL
+    return true;
     //goto restartLoop;
 };
 
@@ -106,8 +107,8 @@ void Input() {
   int flag = 1;
   vector<string> stringList=/*store1.*/parseInput(text);
   if(stringList.size() > 5){
-     cout << "Invalid input: Excess arguments" << endl;
-     Input();
+     cout << "Excess arguments" << endl;
+     //Input();
   }
   Command cmd = commandMap.count(stringList[0]) ? commandMap[stringList[0]] : CMD_UNKNOWN;
 

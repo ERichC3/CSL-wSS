@@ -43,7 +43,7 @@ bool Storage::removeSong(int songID) {
     }
 
     if (!found) {
-        cout << "song  " << songID << " not found." << endl;
+        cout << "song " << songID << " not found." << endl;
     }
 
     return found;
@@ -83,22 +83,26 @@ void Storage::addPlaylist(int playlistID, const std::string& playlistName) {
 }
 
 bool Storage::addSongToPlaylist(int songID, int playlistID) {
+    int fails = 0;
     cout << "add song " << songID << " to playlist " << playlistID << endl;
     // Check if the song exists in the general library
     if (!generalSongLibrary.songExists(songID)) {
         cout << "song " << songID << " does not exist" << endl;
         //debug line: printNotFound("SongID");
-        return false;
+        fails++;
     }
      //cout<<"here2"<<endl;
     // Check if the playlist exists
     if (musicLibrary.find(playlistID) == musicLibrary.end()) {
         cout << "playlist " << playlistID << " does not exist" << endl;
         //debug line: printNotFound("PlaylistID");
-        return false;
+        fails++;
     }
     if(musicLibrary[playlistID].songExists(songID)) {
         cout << "song " << songID << " is already in playlist " << playlistID << endl;
+        fails++;
+    }
+    if (fails != 0) {
         return false;
     }
     //cout<<"here3"<<endl;
@@ -172,8 +176,16 @@ void Storage::removeSongFromPlaylist(int songId, int playlistId) {
     } 
     
     else {
+        //check if song exists and if so print that too
+        if(!generalSongLibrary.songExists(songId)) {
+            cout << "song " << songId << " does not exist" << endl;
+        }
+
         // If playlist doesn't exist, print an error message
-        printNotFound("PlaylistID");
+        cout << "playlist " << playlistId << " does not exist" << endl;
+        //debug line: printNotFound("PlaylistID");
+
+        cout << "song " << songId << " is not in playlist " << playlistId << endl;
     }
 }
 
